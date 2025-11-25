@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -8,17 +8,23 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
-import SportsCard from '../components/SportsCard';
-import { useTheme } from '../contexts/ThemeContext';
-import { logout } from '../redux/authSlice';
-import { addFavorite, removeFavorite } from '../redux/favoritesSlice';
-import { fetchAllEvents, searchEvents } from '../services/api';
-import { COLORS, DARK_COLORS, FONT_SIZES, SHADOWS, SPACING } from '../styles/theme';
+import SportsCard from "../components/SportsCard";
+import { useTheme } from "../contexts/ThemeContext";
+import { logout } from "../redux/authSlice";
+import { addFavorite, removeFavorite } from "../redux/favoritesSlice";
+import { fetchAllEvents, searchEvents } from "../services/api";
+import {
+  COLORS,
+  DARK_COLORS,
+  FONT_SIZES,
+  SHADOWS,
+  SPACING,
+} from "../styles/theme";
 
 const HomeScreen = ({ navigation }) => {
   const { user } = useSelector((state) => state.auth);
@@ -34,7 +40,7 @@ const HomeScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
   const searchTimeoutRef = useRef(null);
 
@@ -56,7 +62,7 @@ const HomeScreen = ({ navigation }) => {
           const results = await searchEvents(q);
           setEvents(results);
         } catch (err) {
-          console.error('Search error', err);
+          console.error("Search error", err);
         } finally {
           setSearchLoading(false);
         }
@@ -71,14 +77,14 @@ const HomeScreen = ({ navigation }) => {
   }, [searchQuery]);
 
   // Use a default leagueId (e.g., English Premier League = 4328)
-  const DEFAULT_LEAGUE_ID = '4328';
+  const DEFAULT_LEAGUE_ID = "4328";
   const loadEvents = async () => {
     setLoading(true);
     try {
       const data = await fetchAllEvents(DEFAULT_LEAGUE_ID);
       setEvents(data);
     } catch (error) {
-      console.error('Error loading events:', error);
+      console.error("Error loading events:", error);
       setEvents([]);
     } finally {
       setLoading(false);
@@ -112,14 +118,21 @@ const HomeScreen = ({ navigation }) => {
   const renderHeader = () => (
     <View style={styles.headerContent}>
       <View>
-        <Text style={[styles.greeting, { color: colors.textLight }]}>Welcome back,</Text>
+        <Text style={[styles.greeting, { color: colors.textLight }]}>
+          Welcome back,
+        </Text>
         <Text style={[styles.userName, { color: colors.text }]}>
-          {user?.firstName || user?.username || 'User'}
+          {user?.firstName || user?.username || "User"}
         </Text>
       </View>
 
       <View style={styles.headerIcons}>
-        <Feather name="award" size={28} color={colors.primary} style={{ marginRight: SPACING.md }} />
+        <Feather
+          name="award"
+          size={28}
+          color={colors.primary}
+          style={{ marginRight: SPACING.md }}
+        />
         <TouchableOpacity onPress={handleLogout}>
           <Feather name="log-out" size={24} color={colors.textLight} />
         </TouchableOpacity>
@@ -129,9 +142,13 @@ const HomeScreen = ({ navigation }) => {
 
   if (loading) {
     return (
-      <View style={[styles.centerContainer, { backgroundColor: colors.background }]}>
+      <View
+        style={[styles.centerContainer, { backgroundColor: colors.background }]}
+      >
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={[styles.loadingText, { color: colors.textLight }]}>Loading events...</Text>
+        <Text style={[styles.loadingText, { color: colors.textLight }]}>
+          Loading events...
+        </Text>
       </View>
     );
   }
@@ -152,8 +169,15 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       {/* Search Bar */}
-      <View style={[styles.searchBarContainer, { backgroundColor: colors.white }]}>
-        <Feather name="search" size={20} color={colors.textLight} style={{ marginRight: 8 }} />
+      <View
+        style={[styles.searchBarContainer, { backgroundColor: colors.white }]}
+      >
+        <Feather
+          name="search"
+          size={20}
+          color={colors.textLight}
+          style={{ marginRight: 8 }}
+        />
         <TextInput
           style={[styles.searchInput, { color: colors.text }]}
           placeholder="Search matches or teams..."
@@ -170,15 +194,31 @@ const HomeScreen = ({ navigation }) => {
           <SportsCard
             event={item}
             isFavorite={isFavorite(item.idEvent)}
-            onPress={() => navigation.navigate('Details', { event: item })}
+            onPress={() => navigation.navigate("Details", { event: item })}
             onToggleFavorite={() => handleToggleFavorite(item)}
+            onPlayerPress={(playerName) => {
+              if (playerName) {
+                navigation.navigate("PlayerDetails", { playerName });
+              }
+            }}
             colors={colors}
           />
         )}
-        contentContainerStyle={[styles.listContent, { paddingBottom: tabBarHeight }]}
-        ListHeaderComponent={<Text style={[styles.sectionTitle, { color: colors.text }]}>All Matches</Text>}
+        contentContainerStyle={[
+          styles.listContent,
+          { paddingBottom: tabBarHeight },
+        ]}
+        ListHeaderComponent={
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
+            All Matches
+          </Text>
+        }
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={[COLORS.primary]} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[COLORS.primary]}
+          />
         }
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
@@ -205,8 +245,8 @@ const styles = StyleSheet.create({
   },
   centerContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   loadingText: {
     marginTop: SPACING.md,
@@ -219,28 +259,28 @@ const styles = StyleSheet.create({
     ...SHADOWS.small,
   },
   headerContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   greeting: {
     fontSize: FONT_SIZES.md,
   },
   userName: {
     fontSize: FONT_SIZES.xxl,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: SPACING.xs,
   },
   headerIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   listContent: {
     padding: SPACING.md,
   },
   searchBarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderRadius: 8,
     marginHorizontal: SPACING.md,
     marginTop: SPACING.md,
@@ -256,11 +296,11 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: FONT_SIZES.xl,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: SPACING.md,
   },
   emptyContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: SPACING.xl * 2,
   },
   emptyText: {
@@ -269,9 +309,9 @@ const styles = StyleSheet.create({
   },
   searchLoading: {
     padding: SPACING.sm,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   searchLoadingText: {
     marginLeft: SPACING.sm,
