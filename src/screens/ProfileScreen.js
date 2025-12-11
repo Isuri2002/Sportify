@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Alert,
   ScrollView,
@@ -7,65 +7,84 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTheme } from '../contexts/ThemeContext';
-import { logout } from '../redux/authSlice';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, SHADOWS } from '../styles/theme';
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { useTheme } from "../contexts/ThemeContext";
+import { logout } from "../redux/authSlice";
+import {
+  COLORS,
+  SPACING,
+  FONT_SIZES,
+  BORDER_RADIUS,
+  SHADOWS,
+} from "../styles/theme";
 
 const ProfileScreen = ({ navigation }) => {
   const { isDarkMode, toggleTheme } = useTheme();
-  const { user } = useSelector(state => state.auth);
-  const { items: favorites } = useSelector(state => state.favorites);
+  const { user } = useSelector((state) => state.auth);
+  const { items: favorites } = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
+    Alert.alert("Logout", "Are you sure you want to logout?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Logout",
+        style: "destructive",
+        onPress: () => {
+          dispatch(logout());
+          navigation.replace("Login"); // Navigate to the Login screen
         },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: () => {
-            dispatch(logout());
-            navigation.replace('Login'); // Navigate to the Login screen
-          },
-        },
-      ]
-    );
+      },
+    ]);
   };
 
   const ProfileHeader = () => (
     <View style={[styles.header, isDarkMode && styles.headerDark]}>
       <View style={styles.avatarContainer}>
         <View style={[styles.avatar, isDarkMode && styles.avatarDark]}>
-          <Feather name="user" size={50} color={isDarkMode ? COLORS.white : COLORS.primary} />
+          <Feather
+            name="user"
+            size={50}
+            color={isDarkMode ? COLORS.white : COLORS.primary}
+          />
         </View>
       </View>
       <Text style={[styles.userName, isDarkMode && styles.textDark]}>
-        {user?.firstName || user?.username || 'Guest User'}
+        {user?.firstName || user?.username || "Guest User"}
       </Text>
       <Text style={[styles.userEmail, isDarkMode && styles.textSecondaryDark]}>
-        {user?.email || 'guest@sportify.com'}
+        {user?.email || "guest@sportify.com"}
       </Text>
     </View>
   );
 
   const SettingsItem = ({ icon, title, subtitle, rightElement }) => (
     <View style={[styles.settingsItem, isDarkMode && styles.settingsItemDark]}>
-      <View style={[styles.settingsIcon, isDarkMode && styles.settingsIconDark]}>
-        <Feather name={icon} size={22} color={isDarkMode ? COLORS.white : COLORS.primary} />
+      <View
+        style={[styles.settingsIcon, isDarkMode && styles.settingsIconDark]}
+      >
+        <Feather
+          name={icon}
+          size={22}
+          color={isDarkMode ? COLORS.white : COLORS.primary}
+        />
       </View>
       <View style={styles.settingsContent}>
-        <Text style={[styles.settingsTitle, isDarkMode && styles.textDark]}>{title}</Text>
+        <Text style={[styles.settingsTitle, isDarkMode && styles.textDark]}>
+          {title}
+        </Text>
         {subtitle && (
-          <Text style={[styles.settingsSubtitle, isDarkMode && styles.textSecondaryDark]}>
+          <Text
+            style={[
+              styles.settingsSubtitle,
+              isDarkMode && styles.textSecondaryDark,
+            ]}
+          >
             {subtitle}
           </Text>
         )}
@@ -90,16 +109,18 @@ const ProfileScreen = ({ navigation }) => {
 
         {/* Preferences Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, isDarkMode && styles.textDark]}>Preferences</Text>
+          <Text style={[styles.sectionTitle, isDarkMode && styles.textDark]}>
+            Preferences
+          </Text>
           <SettingsItem
             icon="moon"
             title="Dark Mode"
-            subtitle={isDarkMode ? 'Enabled' : 'Disabled'}
+            subtitle={isDarkMode ? "Enabled" : "Disabled"}
             rightElement={
               <Switch
                 value={isDarkMode}
                 onValueChange={toggleTheme}
-                trackColor={{ false: '#D1D5DB', true: COLORS.primary }}
+                trackColor={{ false: "#D1D5DB", true: COLORS.primary }}
                 thumbColor={COLORS.white}
               />
             }
@@ -108,7 +129,9 @@ const ProfileScreen = ({ navigation }) => {
 
         {/* About Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, isDarkMode && styles.textDark]}>About</Text>
+          <Text style={[styles.sectionTitle, isDarkMode && styles.textDark]}>
+            About
+          </Text>
           <SettingsItem icon="info" title="App Version" subtitle="1.0.0" />
         </View>
 
@@ -131,15 +154,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   containerDark: {
-    backgroundColor: '#121212',
+    backgroundColor: "#121212",
   },
   header: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: SPACING.xl,
     backgroundColor: COLORS.white,
   },
   headerDark: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: "#1E1E1E",
   },
   avatarContainer: {
     marginBottom: SPACING.md,
@@ -149,15 +172,15 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     backgroundColor: COLORS.background,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   avatarDark: {
-    backgroundColor: '#2C2C2C',
+    backgroundColor: "#2C2C2C",
   },
   userName: {
     fontSize: FONT_SIZES.xxl,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.text,
   },
   userEmail: {
@@ -170,37 +193,38 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: FONT_SIZES.lg,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.text,
+    marginBottom: SPACING.sm,
   },
   settingsItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: SPACING.md,
     backgroundColor: COLORS.white,
     borderRadius: BORDER_RADIUS.md,
     marginBottom: SPACING.sm,
   },
   settingsItemDark: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: "#1E1E1E",
   },
   settingsIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: SPACING.md,
   },
   settingsIconDark: {
-    backgroundColor: '#2C2C2C',
+    backgroundColor: "#2C2C2C",
   },
   settingsContent: {
     flex: 1,
   },
   settingsTitle: {
     fontSize: FONT_SIZES.md,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.text,
   },
   settingsSubtitle: {
@@ -208,21 +232,27 @@ const styles = StyleSheet.create({
     color: COLORS.textLight,
   },
   logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     padding: SPACING.md,
     backgroundColor: COLORS.white,
     borderRadius: BORDER_RADIUS.md,
     margin: SPACING.lg,
   },
   logoutButtonDark: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: "#1E1E1E",
   },
   logoutText: {
     fontSize: FONT_SIZES.md,
     color: COLORS.error,
     marginLeft: SPACING.sm,
+  },
+  textDark: {
+    color: "#FFFFFF",
+  },
+  textSecondaryDark: {
+    color: "#B0B0B0",
   },
 });
 

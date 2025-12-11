@@ -30,7 +30,7 @@ const BottomTabNavigator = ({ isDarkMode }) => (
         }
         return <Feather name={iconName} size={size} color={color} />;
       },
-      tabBarActiveTintColor: isDarkMode ? "#fff" : "tomato",
+      tabBarActiveTintColor: isDarkMode ? "#fff" : "#007AFF",
       tabBarInactiveTintColor: isDarkMode ? "#ccc" : "gray",
       tabBarStyle: {
         backgroundColor: isDarkMode ? "#1E1E1E" : "#fff",
@@ -43,16 +43,17 @@ const BottomTabNavigator = ({ isDarkMode }) => (
   </Tab.Navigator>
 );
 
-const AppNavigator = () => {
+const MainTabScreen = () => {
   const { isDarkMode } = useTheme();
+  return <BottomTabNavigator isDarkMode={isDarkMode} />;
+};
+
+const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen
-        name="Main"
-        component={() => <BottomTabNavigator isDarkMode={isDarkMode} />}
-      />
+      <Stack.Screen name="Main" component={MainTabScreen} />
       <Stack.Screen name="Details" component={DetailsScreen} />
       <Stack.Screen
         name="PlayerDetails"

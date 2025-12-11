@@ -113,6 +113,10 @@ const HomeScreen = ({ navigation }) => {
 
   const handleLogout = () => {
     dispatch(logout());
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Login" }],
+    });
   };
 
   const renderHeader = () => (
