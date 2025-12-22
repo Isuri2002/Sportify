@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+.expo
+.expo-shared
+*.log
+.DS_Store
+.vscode
+.git
+.gitignore
+README.md
